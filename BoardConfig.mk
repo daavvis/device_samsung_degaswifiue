@@ -188,3 +188,6 @@ BOARD_SEPOLICY_UNION += \
     system.te \
     ueventd.te \
     wpa_supplicant.te
+
+# assert
+TARGET_OTA_ASSERT_DEVICE := degaswifi,degaswifiue
