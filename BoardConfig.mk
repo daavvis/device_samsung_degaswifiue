@@ -175,19 +175,22 @@ SENSORS_NEED_SETRATE_ON_ENABLE := true
 BOARD_SEPOLICY_DIRS += \
     device/samsung/degaswifi/sepolicy
 
-BOARD_SEPOLICY_UNION += \
-    file_contexts \
+BOARD_SEPOLICY_UNION := \
+    bluetooth.te \
     device.te \
-    dhcp.te \
+    dock_kbd_attach.te \
+    domain.te \
+    drm_server.te \
+    file_contexts \
     file.te \
+    geomagneticd.te \
     init.te \
-    mediaserver.te \
-    netmgrd.te \
+    netd.te \
+    orientationd.te \
+    pvrsrvinit.te \
     rild.te \
-    secril.te \
-    system.te \
-    ueventd.te \
-    wpa_supplicant.te
+    smc_pa.te \
+    wpa.te
 
 # assert
 TARGET_OTA_ASSERT_DEVICE := degaswifi,degaswifiue

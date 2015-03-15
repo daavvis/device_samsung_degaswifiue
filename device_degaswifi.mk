@@ -1,7 +1,7 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 # The gps config appropriate for this device
-$(call inherit-product, device/common/gps/gps_us_supl.mk)
+# $(call inherit-product, device/common/gps/gps_us_supl.mk)
 
 $(call inherit-product-if-exists, vendor/samsung/degaswifi/degaswifi-vendor.mk)
 
@@ -97,8 +97,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.boot.selinux=disabled
 
 # GPS
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/sirfgps.conf:system/etc/sirfgps.conf
+#PRODUCT_COPY_FILES += \
+   # $(LOCAL_PATH)/configs/sirfgps.conf:system/etc/sirfgps.conf
 
 # Misc
 PRODUCT_PACKAGES += \

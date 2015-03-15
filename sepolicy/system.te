@@ -1,6 +1,0 @@
-allow system wpa_socket:unix_dgram_socket sendto;
-allow system_app volume_data_file:file { read write open getattr };
-
-allow system sysfs:file { read open write };
-allow system self:capability { sys_module };
-

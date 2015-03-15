@@ -1,11 +1,11 @@
-## RIL
+# rild
+allow rild block_device:dir { search };
+allow rild efs_block_device:blk_file rw_file_perms;
+allow rild efs_block_device:dir { search };
+allow rild efs_file:file { read open write getattr setattr append };
+allow rild radio_data_file:dir { setattr };
 allow rild radio_device:chr_file rw_file_perms;
-allow rild { efs_file }:file rw_file_perms;
-allow rild self:netlink_socket { create bind read write };
+allow rild self:netlink_kobject_uevent_socket { create bind read write };
 allow rild self:netlink_route_socket { write };
-
-# Allow logging diagnostic items
-allow rild diagnostic_device:chr_file rw_file_perms;
-
-# XXX label with own type?
-allow rild sysfs:file { read open write getattr };
+allow rild self:netlink_socket { create bind read write };
+allow rild self:process { execmem };
