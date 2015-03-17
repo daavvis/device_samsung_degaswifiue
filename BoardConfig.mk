@@ -13,7 +13,9 @@
 # limitations under the License.
 #
 
+# Target info
 USE_CAMERA_STUB := true
+BOARD_HAS_NO_SELECT_BUTTON := true
 
 # inherit from the proprietary version
 #-include vendor/samsung/degaswifi/BoardConfigVendor.mk
@@ -31,79 +33,49 @@ TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_VARIANT := cortex-a7
-ARCH_ARM_HAVE_TLS_REGISTER := true
+TARGET_CPU_SMP := true
 
 TARGET_BOOTLOADER_BOARD_NAME := PXA1088
-# TARGET_RECOVERY_FSTAB := device/samsung/degaswifi/recovery.fstab
+ARCH_ARM_HAVE_TLS_REGISTER := true
 
-BOARD_KERNEL_CMDLINE := 
-BOARD_KERNEL_BASE := 0x10000000
-BOARD_KERNEL_PAGESIZE := 2048
+# Flags
+COMMON_GLOBAL_CFLAGS += -DMRVL_HARDWARE
+COMMON_GLOBAL_CFLAGS += -DNO_RGBX_8888
+TARGET_GLOBAL_CFLAGS += -mtune=cortex-a7 -mfpu=neon -mfloat-abi=softfp
+TARGET_GLOBAL_CPPFLAGS += -mtune=cortex-a7 -mfpu=neon -mfloat-abi=softfp
 
-# fix this up by examining /proc/mtd on a running device
-BOARD_BOOTIMAGE_PARTITION_SIZE := 0x105c0000
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 0x105c0000
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 0x105c0000
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 0x105c0000
-BOARD_FLASH_BLOCK_SIZE := 131072
-
-BOARD_HAS_NO_SELECT_BUTTON := true
-
+# Kernel
 # BOARD_CUSTOM_MKBOOTIMG := degas-mkbootimg
 #BOARD_CUSTOM_BOOTIMG_MK := device/samsung/degaswifi/custom_mkbootimg.mk
 #BOARD_MKBOOTIMG_ARGS := --dt device/samsung/degaswifi/recovery.img-dt
 #TARGET_PREBUILT_KERNEL := device/samsung/degaswifi/kernel
 TARGET_KERNEL_SOURCE := kernel/samsung/degaswifi
-TARGET_KERNEL_CONFIG := pxa1088_degaswifi_eur_defconfig
-TARGET_KERNEL_VARIANT_CONFIG := pxa1088_degaswifi_eur_tgalal
+TARGET_KERNEL_CONFIG := pxa1088_degaswifi_usa_defconfig
+BOARD_KERNEL_CMDLINE := 
+BOARD_KERNEL_BASE := 0x10000000
+BOARD_KERNEL_PAGESIZE := 2048
 
-#twrp
-#DEVICE_RESOLUTION := 800x1280
-RECOVERY_SDCARD_ON_DATA := true
-TW_INTERNAL_STORAGE_PATH := "/data/media"
-TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
-TW_EXTERNAL_STORAGE_PATH := "/external_sd"
-TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
-BOARD_HAS_NO_REAL_SDCARD := true
-SP1_NAME := "efs"
-SP1_BACKUP_METHOD := files
-TW_NO_USB_STORAGE := true
-TW_INCLUDE_FUSE_EXFAT := true
-HAVE_SELINUX := true
-TW_NO_REBOOT_BOOTLOADER := true
-TW_HAS_DOWNLOAD_MODE := true
-TW_MAX_BRIGHTNESS := 255
-TW_BRIGHTNESS_PATH := /sys/class/backlight/panel/brightness
-
-#cwm
+# Partitions
 TARGET_USERIMAGES_USE_EXT4 := true
-TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
-TARGET_RECOVERY_FSTAB := device/samsung/degaswifi/rootdir/fstab.pxa1088
-RECOVERY_FSTAB_VERSION := 2
+BOARD_BOOTIMAGE_PARTITION_SIZE := 16777216
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 16777216
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2224029696
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 5230297088
+BOARD_FLASH_BLOCK_SIZE := 131072
+BOARD_UMS_LUNFILE := "/sys/class/android_usb/f_mass_storage/lun0/file"
 BOARD_USES_MMCUTILS := true
+BOARD_HAS_NO_MISC_PARTITION := true
 BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_HAS_NO_MISC_PARTITION := true
-BOARD_HAS_NO_SELECT_BUTTON := true
 
-#Generic config
-MRVL_ION := true
-# The above lines are almost the same as Brownstone.
-# MMP3 Special
-BOARD_USE_VIVANTE_GRALLOC := true
-HDMI_SUPPORT_3D := true
-
-#BOARD_GFX_DRIVER_VERSION=4x
-
-#DYNAMIC_ALSA_PARAMS := true
-
-#Enable marvell interface in SurfaceFlinger
-MRVL_INTERFACE_ANIMATION := true
-#ENABLE_HWC_GC_PATH := true
-
-#Launch DMS in SurfaceFlinger process
-MRVL_LAUNCH_DMS_IN_SURFACEFLINGER := true
-
-TARGET_FORCE_CPU_UPLOAD := true
+# Recovery
+TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
+TARGET_RECOVERY_FSTAB := device/samsung/degaswifi/rootdir/fstab.pxa1088
+#TARGET_RECOVERY_FSTAB := device/samsung/degaswifi/rootdir/recovery.fstab
+RECOVERY_FSTAB_VERSION := 2
+BOARD_USES_MMCUTILS := true
+BOARD_RECOVERY_SWIPE := true
+BOARD_SUPPRESS_EMMC_WIPE := true
 
 # Init
 TARGET_PROVIDES_INIT := true
@@ -128,6 +100,12 @@ WIFI_SDIO_IF_DRIVER_MODULE_PATH := "/system/lib/modules/mlan.ko"
 WIFI_SDIO_IF_DRIVER_MODULE_NAME := "mlan"
 WIFI_SDIO_IF_DRIVER_MODULE_ARG := ""
 MRVL_WIRELESS_DAEMON_API := true
+
+# Vold
+BOARD_VOLD_MAX_PARTITIONS := 17
+BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
+BOARD_VOLD_DISC_HAS_MULTIPLE_MAJORS := true
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/class/android_usb/f_mass_storage/lun%d/file"
 
 # Graphics
 USE_OPENGL_RENDERER := true
@@ -156,12 +134,42 @@ TARGET_HARDWARE_3D := false
 
 BOARD_ENABLE_MULTI_DISPLAYS := true
 
+#Generic config
+MRVL_ION := true
+
+# The above lines are almost the same as Brownstone.
+# MMP3 Special
+BOARD_USE_VIVANTE_GRALLOC := true
+HDMI_SUPPORT_3D := true
+
+#BOARD_GFX_DRIVER_VERSION=4x
+
+#DYNAMIC_ALSA_PARAMS := true
+
+#Enable marvell interface in SurfaceFlinger
+MRVL_INTERFACE_ANIMATION := true
+#ENABLE_HWC_GC_PATH := true
+
+#Launch DMS in SurfaceFlinger process
+MRVL_LAUNCH_DMS_IN_SURFACEFLINGER := true
+
+TARGET_FORCE_CPU_UPLOAD := true
+
+# Bluetooth
+BOARD_HAVE_BLUETOOTH := true
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/samsung/degaswifi/bluetooth
+BOARD_HAVE_BLUETOOTH_BCM := true
+USE_BLUETOOTH_SAP := false
+
 # Needed for blobs
 #COMMON_GLOBAL_CFLAGS += -DMR0_CAMERA_BLOB
 COMMON_GLOBAL_CFLAGS += -DBOARD_EGL_NEEDS_LEGACY_FB
 COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
 COMMON_GLOBAL_CFLAGS += -DSAMSUNG_DVFS
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
+
+# Charging mode
+BOARD_CHARGING_MODE_BOOTING_LPM := true
 
 TARGET_SPECIFIC_HEADER_PATH := device/samsung/degaswifi/include
 
@@ -193,4 +201,17 @@ BOARD_SEPOLICY_UNION := \
     wpa.te
 
 # assert
-TARGET_OTA_ASSERT_DEVICE := degaswifi,degaswifiue
+TARGET_OTA_ASSERT_DEVICE := degas,degaswifi,degaswifiue
+
+
+#twrp
+#DEVICE_RESOLUTION := 800x1280
+RECOVERY_SDCARD_ON_DATA := true
+TW_NO_USB_STORAGE := true
+HAVE_SELINUX := true
+TW_NO_REBOOT_BOOTLOADER := true
+TW_HAS_DOWNLOAD_MODE := true
+TW_MAX_BRIGHTNESS := 255
+TW_BRIGHTNESS_PATH := /sys/class/backlight/panel/brightness
+
+BOARD_HARDWARE_CLASS += hardware/samsung/cmhw
