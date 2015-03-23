@@ -32,7 +32,7 @@ TARGET_BOARD_PLATFORM := mrvl
 TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv7-a-neon
-TARGET_CPU_VARIANT := cortex-a7
+TARGET_CPU_VARIANT := cortex-a15
 TARGET_CPU_SMP := true
 
 TARGET_BOOTLOADER_BOARD_NAME := PXA1088
@@ -46,13 +46,15 @@ TARGET_GLOBAL_CPPFLAGS += -mtune=cortex-a7 -mfpu=neon -mfloat-abi=softfp
 
 # Kernel
 # BOARD_CUSTOM_MKBOOTIMG := degas-mkbootimg
-#BOARD_CUSTOM_BOOTIMG_MK := device/samsung/degaswifi/custom_mkbootimg.mk
-#BOARD_MKBOOTIMG_ARGS := --dt device/samsung/degaswifi/recovery.img-dt
-#TARGET_PREBUILT_KERNEL := device/samsung/degaswifi/kernel
+# BOARD_CUSTOM_BOOTIMG_MK := device/samsung/degaswifi/custom_mkbootimg.mk
+    
+# TARGET_PREBUILT_KERNEL := device/samsung/degaswifi/kernel
 TARGET_KERNEL_SOURCE := kernel/samsung/degaswifi
 TARGET_KERNEL_CONFIG := pxa1088_degaswifi_usa_defconfig
 BOARD_KERNEL_CMDLINE := 
 BOARD_KERNEL_BASE := 0x10000000
+BOARD_CUSTOM_BOOTIMG_MK := device/samsung/degaswifi/degaswifi_mkbootimg.mk
+BOARD_MKBOOTIMG_ARGS := --dt device/samsung/degaswifi/rootdir/boot.img-dt --ramdisk_offset 0x01000000
 BOARD_KERNEL_PAGESIZE := 2048
 
 # Partitions
@@ -66,7 +68,6 @@ BOARD_UMS_LUNFILE := "/sys/class/android_usb/f_mass_storage/lun0/file"
 BOARD_USES_MMCUTILS := true
 BOARD_HAS_NO_MISC_PARTITION := true
 BOARD_HAS_LARGE_FILESYSTEM := true
-BOARD_HAS_NO_MISC_PARTITION := true
 
 # Recovery
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
@@ -214,4 +215,4 @@ TW_HAS_DOWNLOAD_MODE := true
 TW_MAX_BRIGHTNESS := 255
 TW_BRIGHTNESS_PATH := /sys/class/backlight/panel/brightness
 
-BOARD_HARDWARE_CLASS += hardware/samsung/cmhw
+BOARD_HARDWARE_CLASS += hardware/samsung/mkhw
